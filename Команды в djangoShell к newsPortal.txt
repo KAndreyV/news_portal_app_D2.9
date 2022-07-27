@@ -1,0 +1,62 @@
+	from news_portal_app.models import *
+
+1)	user1 = User.objects.create_user('Tom')
+	user2 = User.objects.create_user('Pavel')
+
+2)	author1 = Author.objects.create(userA = user1)
+	author2 = Author.objects.create(userA = user2)
+
+3)	category1 = Category.objects.create(theme = "Спорт")
+	category2 = Category.objects.create(theme = "Музыка")
+	category3 = Category.objects.create(theme = "Наука")
+	category4 = Category.objects.create(theme = "Литература")
+
+4)	post1 = Post.objects.create(heading = "Взаимосвязь музыки и спорта", article_or_news = "AR", text_article = "Текст статьи", author = author1)
+	post2 = Post.objects.create(heading = "Литература в науке", article_or_news = "AR", text_article = "Текст статьи", author = author1)
+	post3 = Post.objects.create(heading = "Спорт и музыка в науке", article_or_news = "NW", text_article = "Текст новости", author = author2)
+
+5)	Post.objects.get(id=1).category.add(Category.objects.get(id=1))
+	Post.objects.get(id=1).category.add(Category.objects.get(id=2))
+	Post.objects.get(id=2).category.add(Category.objects.get(id=3))
+	Post.objects.get(id=2).category.add(Category.objects.get(id=4))
+	Post.objects.get(id=3).category.add(Category.objects.get(id=1))
+	Post.objects.get(id=3).category.add(Category.objects.get(id=2))
+	Post.objects.get(id=3).category.add(Category.objects.get(id=3))
+
+6)	Comment.objects.create(post = Post.objects.get(id=1), commentator = Author.objects.get(id=2).userA, text_of_comment="Текст комментария")
+	Comment.objects.create(post = Post.objects.get(id=1), commentator = Author.objects.get(id=1).userA, text_of_comment="Спасибо за комментарий")
+	Comment.objects.create(post = Post.objects.get(id=2), commentator = Author.objects.get(id=2).userA, text_of_comment="Текст комментария")
+	Comment.objects.create(post = Post.objects.get(id=3), commentator = Author.objects.get(id=1).userA, text_of_comment="Вот так новость!")
+
+7)	Post.objects.get(id=1).like()
+	Post.objects.get(id=1).like()
+	Comment.objects.get(id=1).dislike()
+	Comment.objects.get(id=2).like()
+	Post.objects.get(id=2).dislike()
+	Post.objects.get(id=3).like()
+	Comment.objects.get(id=3).like()
+	Comment.objects.get(id=4).dislike()
+	Comment.objects.get(id=4).dislike()
+	Comment.objects.get(id=3).like()
+
+8)	Author.objects.get(id=1).update_rating()
+	Author.objects.get(id=2).update_rating()
+
+9)	for i in Author.objects.order_by('-ratingAuthor')[:1]:
+		i.userA.username
+		i.ratingAuthor
+или
+
+	Author.objects.order_by('-ratingAuthor')[0].userA.username
+	Author.objects.order_by('-ratingAuthor')[0].ratingAuthor
+
+10)	for i in Post.objects.order_by('-post_rating')[:1]:
+		i.time_in
+		i.author.userA.username
+		i.post_rating
+		i.preview()
+
+11)	Comment.objects.filter(post_id = Post.objects.order_by('-post_rating')[0].id).values('time_create', 'commentator', 'comments_rating', 'text_of_comment')
+		
+		
+
